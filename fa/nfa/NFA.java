@@ -1,15 +1,33 @@
 package fa.nfa;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import fa.State;
 import fa.dfa.DFA;
 
-public class NFA implements NFAInterface{
 
+
+public class NFA implements NFAInterface{
+	private Set<NFAState> states;
+	private Set<Character> abc;
+
+	
+	public NFA() {
+		states = new LinkedHashSet<NFAState>();
+		abc = new LinkedHashSet<Character>();
+	}
+	
 	@Override
 	public void addStartState(String name) {
-		// TODO Auto-generated method stub
+		NFAState s = checkIfExists(name);
+		if(s == null){
+			s = new NFAState(name);
+			addState(s);
+		} else {
+			System.out.println("WARNING: A state with name " + name + " already exists in the DFA");
+		}
+		s.isInitial();
 		
 	}
 
@@ -17,6 +35,10 @@ public class NFA implements NFAInterface{
 	public void addState(String name) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void addState(NFAState s){
+		states.add(s);
 	}
 
 	@Override
@@ -55,11 +77,7 @@ public class NFA implements NFAInterface{
 		return null;
 	}
 
-	@Override
-	public DFA getDFA() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Set<NFAState> getToState(NFAState from, char onSymb) {
@@ -69,6 +87,28 @@ public class NFA implements NFAInterface{
 
 	@Override
 	public Set<NFAState> eClosure(NFAState s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * Check if a state with such name already exists
+	 * @param name
+	 * @return null if no state exist, or NFAState object otherwise.
+	 */
+	private NFAState checkIfExists(String name) {
+		NFAState ret = null;
+		for(NFAState s : states){
+			if(s.getName().equals(name)){
+				ret = s;
+				break;
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public DFA getDFA() {
 		// TODO Auto-generated method stub
 		return null;
 	}
