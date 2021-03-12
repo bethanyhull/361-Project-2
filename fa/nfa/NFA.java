@@ -8,6 +8,7 @@ import fa.dfa.DFA;
 
 
 
+
 public class NFA implements NFAInterface{
 	private Set<NFAState> states;
 	private Set<Character> abc;
@@ -33,7 +34,13 @@ public class NFA implements NFAInterface{
 
 	@Override
 	public void addState(String name) {
-		// TODO Auto-generated method stub
+		NFAState s = checkIfExists(name);
+		if( s == null){
+			s = new NFAState(name);
+			addState(s);
+		} else {
+			System.out.println("WARNING: A state with name " + name + " already exists in the DFA");
+		}
 		
 	}
 	
