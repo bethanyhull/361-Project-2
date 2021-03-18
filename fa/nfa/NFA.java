@@ -1,30 +1,80 @@
 package fa.nfa;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import fa.State;
 import fa.dfa.DFA;
+import fa.dfa.DFAState;
 
 public class NFA implements NFAInterface {
 	
 //	Use correct data-structures for each of NFA’s element, e.g., set of states should be
 //	modeled by a class implementing java.util.Set interface- probably use the ones in th DFA class
-
+	private Set<NFAState> states;
+	private NFAState start;
+	private Set<Character> abc;
+	
+	public NFA() {
+		states = new LinkedHashSet<NFAState>();
+		abc = new LinkedHashSet<Character>();
+	}
+	
 	@Override
 	public void addStartState(String name) {
-		// TODO Auto-generated method stub- copy DFA for now
+		NFAState s = checkIfExists(name);
+		if(s == null){
+			s = new NFAState(name);
+			addState(s);
+		} else {
+			System.out.println("WARNING: A state with name " + name + " already exists in the NFA");
+		}
+		start = s;
+		
+	}
+
+	/**
+	 * Check if a state with such name already exists
+	 * @param name
+	 * @return null if no state exist, or NFAState object otherwise.
+	 */
+	private NFAState checkIfExists(String name) {
+		NFAState ret = null;
+		for(NFAState s : states){
+			if(s.getName().equals(name)){
+				ret = s;
+				break;
+			}
+		}
+		return ret;
+	}
+
+	private void addState(NFAState s) {
+		states.add(s);
 		
 	}
 
 	@Override
 	public void addState(String name) {
-		// TODO Auto-generated method stub- copy DFA for now
+		NFAState s = checkIfExists(name);
+		if( s == null){
+			s = new NFAState(name);
+			addState(s);
+		} else {
+			System.out.println("WARNING: A state with name " + name + " already exists in the NFA");
+		}
 		
 	}
 
 	@Override
 	public void addFinalState(String name) {
-		// TODO Auto-generated method stub- copy DFA for now
+		NFAState s = checkIfExists(name);
+		if( s == null){
+			s = new NFAState(name, true);
+			addState(s);
+		} else {
+			System.out.println("WARNING: A state with name " + name + " already exists in the NFA");
+		}
 		
 	}
 
@@ -48,14 +98,12 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public State getStartState() {
-		// TODO Auto-generated method stub- copy DFA for now
-		return null;
+		return start;
 	}
 
 	@Override
 	public Set<Character> getABC() {
-		// TODO Auto-generated method stub- copy DFA for now
-		return null;
+		return abc;
 	}
 
 	@Override
@@ -76,8 +124,7 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public Set<NFAState> getToState(NFAState from, char onSymb) {
-		// TODO Auto-generated method stub
-		return null;
+		return from.getTo(onSymb);
 	}
 
 	@Override
