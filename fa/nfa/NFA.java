@@ -80,20 +80,38 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
-		// TODO Auto-generated method stub- copy DFA for now
+		NFAState from = checkIfExists(fromState);
+		NFAState to = checkIfExists(toState);
+		if(from == null){
+			System.err.println("ERROR: No NFA state exists with name " + fromState);
+			System.exit(2);
+		} else if (to == null){
+			System.err.println("ERROR: No NFA state exists with name " + toState);
+			System.exit(2);
+		}
+		from.addTransition(onSymb, to);
+		
+		if(!abc.contains(onSymb)){
+			abc.add(onSymb);
+		}
 		
 	}
 
 	@Override
 	public Set<? extends State> getStates() {
-		// TODO Auto-generated method stub- copy DFA for now
-		return null;
+		
+		return states;
 	}
 
 	@Override
 	public Set<? extends State> getFinalStates() {
-		// TODO Auto-generated method stub- copy DFA for now
-		return null;
+		Set<NFAState> ret = new LinkedHashSet<NFAState>();
+		for(NFAState s : states){
+			if(s.isFinal()){
+				ret.add(s);
+			}
+		}
+		return ret;
 	}
 
 	@Override
