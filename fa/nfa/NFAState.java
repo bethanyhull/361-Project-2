@@ -1,32 +1,52 @@
 package fa.nfa;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import fa.State;
+import fa.dfa.DFAState;
 
 public class NFAState extends State{
 
+	private HashMap<Character, Set<NFAState>> delta;//delta
+	private boolean isFinal;//remembers its type
+	
+	/**
+	 * Default constructor
+	 * @param name the state name
+	 */
 	public NFAState(String name) {
-		// TODO Auto-generated constructor stub
+		this.name = name;
+		delta = new HashMap<Character, Set<NFAState>>();
+		isFinal = false;
 	}
 
+	/**
+	 * Overlaoded constructor that sets the state type
+	 * @param name the state name
+	 * @param b the type of state: true - final, false - nonfinal.
+	 */
 	public NFAState(String name, boolean b) {
-		// TODO Auto-generated constructor stub
+		this.name = name;
+		delta = new HashMap<Character, Set<NFAState>>();
+		this.isFinal = b;
 	}
 
 	public Set<NFAState> getTo(char onSymb) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<NFAState> ret = delta.get(onSymb);
+		if(ret == null){
+			 System.err.println("ERROR: NFAState.getTo(char symb) returns null on " + onSymb + " from " + name);
+			 System.exit(2);
+			}
+		return ret;	
 	}
 
 	public void addTransition(char onSymb, NFAState to) {
-		// TODO Auto-generated method stub
-		
+		//delta.put(onSymb, to);
 	}
 
 	public boolean isFinal() {
-		// TODO Auto-generated method stub
-		return false;
+		return isFinal;
 	}
 	
 	// If your implementation requires it, you can add additional instance variables and methods to your NFAState
