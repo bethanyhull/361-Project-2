@@ -15,6 +15,7 @@ public class NFA implements NFAInterface {
 	private NFAState start;
 	private Set<Character> abc;
 	
+	
 	public NFA() {
 		states = new LinkedHashSet<NFAState>();
 		abc = new LinkedHashSet<Character>();
@@ -147,15 +148,40 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public Set<NFAState> eClosure(NFAState s) {
+		
+		
+		
+		
 		// TODO Auto-generated method stub- Do this method before getDFA!!!
 		// computes the set of NFA states that can be reached from the argument state s by going
 		// only along ε transitions, including s itself. You must implement it using the depth-first
 		// search algorithm (DFS) using a recursion, i.e., eClosure should invoke itself or another
-		// helper method, e.g., private Set<NFAState> eClosure(NFAState s, Set<NFASate> visited)
+		// helper method, e.g., private Set<NFAState> eClosure(NFAState s, Set<NFAState> visited)
 		// that invokes itself.
 		
 		
 		return null;
 	}
+	
+	
+	private Set<NFAState> eClosureHelper(NFAState s, Set<NFAState> visited ) {
+		visited.add(s);
+		if (!s.hasNextE()) {
+			return visited;
+		}
+		
+		Set<NFAState> newStates = s.getTo('e');
+		
+		for (NFAState state: newStates) {
+			visited.addAll(eClosureHelper(state, visited));
+		}
+		
+		return visited;
+		
+		
+	}
+
+	
+	
 
 }
