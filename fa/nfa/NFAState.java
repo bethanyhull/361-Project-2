@@ -38,17 +38,17 @@ public class NFAState extends State{
 
 	public Set<NFAState> getTo(char onSymb) {
 		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
-		//delta.get
 		
-		//NFAState temp;// = delta.get(onSymb);
 		for(Entry<Character, NFAState> set : delta.entrySet()) {
-			ret.add(delta.get(onSymb));
+			if(set.getValue().delta.get(onSymb) != null) {
+				ret.add(set.getValue().delta.get(onSymb));
+			}
 		}
 		
 		if(ret == null){
 			 System.err.println("ERROR: NFAState.getTo(char symb) returns null on " + onSymb + " from " + name);
 			 System.exit(2);
-			}
+		}
 		return ret;	
 	}
 
