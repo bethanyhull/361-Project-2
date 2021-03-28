@@ -51,6 +51,15 @@ public class NFAState extends State{
 		}
 		return ret;	
 	}
+	
+	public boolean hasNextE() {
+		for(Entry<Character, NFAState> set: delta.entrySet()) {
+			if(set.getValue().delta.get('e') != null){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void addTransition(char onSymb, NFAState to) {
 		delta.put(onSymb, to);
