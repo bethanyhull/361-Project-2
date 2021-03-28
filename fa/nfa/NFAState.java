@@ -2,6 +2,8 @@ package fa.nfa;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import fa.State;
@@ -37,7 +39,11 @@ public class NFAState extends State{
 	public Set<NFAState> getTo(char onSymb) {
 		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
 		//delta.get
-		NFAState temp = delta.get(onSymb);
+		
+		//NFAState temp;// = delta.get(onSymb);
+		for(Entry<Character, NFAState> set : delta.entrySet()) {
+			ret.add(delta.get(onSymb));
+		}
 		
 		if(ret == null){
 			 System.err.println("ERROR: NFAState.getTo(char symb) returns null on " + onSymb + " from " + name);
@@ -47,7 +53,7 @@ public class NFAState extends State{
 	}
 
 	public void addTransition(char onSymb, NFAState to) {
-		//delta.put(onSymb, to);
+		delta.put(onSymb, to);
 		//set.add
 	}
 
