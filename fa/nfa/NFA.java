@@ -138,6 +138,17 @@ public class NFA implements NFAInterface {
 		// algorithm ( a loop iterating over a queue; an element of a queue is a set of NFA states).
 		// Create a private method for this maybe??
 		
+		DFA dfa = new DFA();
+		//Queue<NFAState> q = new Queue<NFAState>();
+		//DFAState dfaStart = new DFAState(start.getName());
+		dfa.addStartState(start.getName());
+		//for each state
+			for(Character c : abc) {
+				//add
+				//eclosure
+				//if
+			}
+		System.out.println(dfa.toString());
 		return null;
 	}
 
