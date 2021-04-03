@@ -144,7 +144,26 @@ public class NFA implements NFAInterface {
 		dfa.addStartState(start.getName());
 		//for each state
 			for(Character c : abc) {
-				//add
+				Set<NFAState> getTo = start.getTo(c); // get set of next states 
+				for (NFAState s : getTo) {
+					if(s.hasNextE()) { // check each next state for e closure
+						
+						//TODO: BUG AT eClosure!!!!!
+						// what happens of in the course of the if there is a loop back to the original state?
+						//Like in test 0? Creates endless loop -> stack overflow error when run.
+						getTo.addAll(eClosure(s));
+					}
+				}
+				
+				String newStateName = ""; // create new name of DFA state
+				for (NFAState s : getTo) {
+					newStateName = newStateName + s.getName();
+				}
+				
+				dfa.addState(newStateName);
+				DFAState newState = new DFAState(newStateName);
+				dfa.getStartState().addTransition(c, newState);
+				
 				//eclosure
 				//if
 			}
@@ -159,24 +178,18 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public Set<NFAState> eClosure(NFAState s) {
+		Set<NFAState> visited = new LinkedHashSet<NFAState>();
+		visited = eClosureHelper(s, visited);
 		
-		
-		
-		
-		// TODO Auto-generated method stub- Do this method before getDFA!!!
-		// computes the set of NFA states that can be reached from the argument state s by going
-		// only along ε transitions, including s itself. You must implement it using the depth-first
-		// search algorithm (DFS) using a recursion, i.e., eClosure should invoke itself or another
-		// helper method, e.g., private Set<NFAState> eClosure(NFAState s, Set<NFAState> visited)
-		// that invokes itself.
-		
+		//TODO: delete print statements
+		System.out.println("eClosure for " + s.getName());
+		System.out.println(visited);
 		
 		return null;
 	}
 	
 	
 	private Set<NFAState> eClosureHelper(NFAState s, Set<NFAState> visited ) {
-		visited.add(s);
 		if (!s.hasNextE()) {
 			return visited;
 		}
@@ -184,6 +197,8 @@ public class NFA implements NFAInterface {
 		Set<NFAState> newStates = s.getTo('e');
 		
 		for (NFAState state: newStates) {
+			
+			visited.add(state);
 			visited.addAll(eClosureHelper(state, visited));
 		}
 		
