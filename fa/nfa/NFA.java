@@ -197,7 +197,11 @@ public class NFA implements NFAInterface {
 		Set<NFAState> newStates = s.getTo('e');
 		
 		for (NFAState state: newStates) {
-			
+			for(NFAState visitedState : visited) {
+				if(state.equals(visitedState)) {
+					return visited;
+				}
+			}
 			visited.add(state);
 			visited.addAll(eClosureHelper(state, visited));
 		}
