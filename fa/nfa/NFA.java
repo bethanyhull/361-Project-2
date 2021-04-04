@@ -144,16 +144,33 @@ public class NFA implements NFAInterface {
 		dfa.addStartState(start.getName());
 		//for each state
 			for(Character c : abc) {
+				
+				//TODO: delete print statements
+				System.out.println("On character  " + c);
+				
 				Set<NFAState> getTo = start.getTo(c); // get set of next states 
+				if (getTo != null) {
+					
+					
+					//TODO: delete print statements
+					System.out.println("Has a  " + c);	
+					
 				for (NFAState s : getTo) {
 					if(s.hasNextE()) { // check each next state for e closure
 						
 						//TODO: BUG AT eClosure!!!!!
 						// what happens of in the course of the if there is a loop back to the original state?
 						//Like in test 0? Creates endless loop -> stack overflow error when run.
-						getTo.addAll(eClosure(s));
+						Set<NFAState> setWithE = eClosure(s);
+						
+						//TODO: delete print statements
+						System.out.println("eClosure set " + s.getName());
+						System.out.println(setWithE);
+						
+						getTo.addAll(setWithE);
 					}
 				}
+				
 				
 				String newStateName = ""; // create new name of DFA state
 				for (NFAState s : getTo) {
@@ -165,7 +182,7 @@ public class NFA implements NFAInterface {
 				dfa.getStartState().addTransition(c, newState);
 				
 				//eclosure
-				//if
+			}	//if
 			}
 		System.out.println(dfa.toString());
 		return null;
@@ -195,15 +212,21 @@ public class NFA implements NFAInterface {
 		}
 		
 		Set<NFAState> newStates = s.getTo('e');
+		System.out.println("New States from " + s.getName() + " on eClosure" );
+		System.out.println(newStates);
 		
 		for (NFAState state: newStates) {
 			for(NFAState visitedState : visited) {
-				if(state.equals(visitedState)) {
+				if(state.getName().equals(visitedState.getName())) {
 					return visited;
 				}
 			}
 			visited.add(state);
 			visited.addAll(eClosureHelper(state, visited));
+			
+			//TODO: delete print statements
+			System.out.println("eClosure step " + s.getName());
+			System.out.println(visited);
 		}
 		
 		return visited;

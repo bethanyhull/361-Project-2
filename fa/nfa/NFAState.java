@@ -43,17 +43,22 @@ public class NFAState extends State{
 			if(set.getValue().delta.get(onSymb) != null) {
 				ret.add(set.getValue().delta.get(onSymb));
 			}
+			else {
+				return null;
 		}
 		
-		if(ret == null){
-			 System.err.println("ERROR: NFAState.getTo(char symb) returns null on " + onSymb + " from " + name);
-			 System.exit(2);
+		
 		}
 		return ret;	
 	}
 	
 	public boolean hasNextE() {
 		for(Entry<Character, NFAState> set: delta.entrySet()) {
+			
+			//TODO: delete print statements
+			System.out.println("check if " + getName() + " has e ");
+			System.out.println(set.getValue().delta.get('e'));
+			
 			if(set.getValue().delta.get('e') != null){
 				return true;
 			}
