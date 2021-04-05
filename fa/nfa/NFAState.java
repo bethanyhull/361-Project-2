@@ -43,6 +43,7 @@ public class NFAState extends State{
 			//System.out.println("in for loop");
 			if(set.getValue().delta.get(onSymb) != null) {
 				ret.add(set.getValue().delta.get(onSymb));
+				System.out.println(set.getValue().delta.get(onSymb));
 			}
 			else {
 				return null;
