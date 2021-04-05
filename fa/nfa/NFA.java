@@ -161,13 +161,16 @@ public class NFA implements NFAInterface {
 						//TODO: BUG AT eClosure!!!!!
 						// what happens of in the course of the if there is a loop back to the original state?
 						//Like in test 0? Creates endless loop -> stack overflow error when run.
-						Set<NFAState> setWithE = eClosure(s);
+						if(eClosure(s) != null) {
+							Set<NFAState> setWithE = eClosure(s);
+							//TODO: delete print statements
+							System.out.println("eClosure set " + s.getName());
+							System.out.println(setWithE);
+							
+							getTo.addAll(setWithE);
+						}
 						
-						//TODO: delete print statements
-						System.out.println("eClosure set " + s.getName());
-						System.out.println(setWithE);
-						
-						getTo.addAll(setWithE);
+
 					}
 				}
 				
