@@ -45,11 +45,6 @@ public class NFAState extends State{
 				ret.add(set.getValue().delta.get(onSymb));
 				System.out.println(set.getValue().delta.get(onSymb));
 			}
-			else {
-				return null;
-		}
-		
-		
 		}
 		System.out.println(ret);
 		return ret;	
