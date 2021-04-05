@@ -38,9 +38,9 @@ public class NFAState extends State{
 
 	public Set<NFAState> getTo(char onSymb) {
 		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
-		System.out.println(delta.entrySet());
+		//System.out.println(delta.entrySet());
 		for(Entry<Character, NFAState> set : delta.entrySet()) {
-			System.out.println("in for loop");
+			//System.out.println("in for loop");
 			if(set.getValue().delta.get(onSymb) != null) {
 				ret.add(set.getValue().delta.get(onSymb));
 			}
@@ -50,6 +50,7 @@ public class NFAState extends State{
 		
 		
 		}
+		System.out.println(ret.toString());
 		return ret;	
 	}
 	
