@@ -51,13 +51,13 @@ public class NFAState extends State{
 	}
 	
 	public boolean hasNextE() {
+		System.out.println("Delta entry set");
+		System.out.println(delta.entrySet());	
+		
+		
 		for(Entry<Character, NFAState> set: delta.entrySet()) {
-			
-			//TODO: delete print statements
-			System.out.println("check if " + getName() + " has e ");
-			System.out.println(set.getValue().delta.get('e'));
-			
-			if(set.getValue().delta.get('e') != null){
+			System.out.println(set);
+			if (set.getKey() == 'e') {
 				return true;
 			}
 		}
