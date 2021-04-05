@@ -145,16 +145,9 @@ public class NFA implements NFAInterface {
 		//for each state
 			for(Character c : abc) {
 				
-				//TODO: delete print statements
-				System.out.println("On character  " + c);
-				
 				Set<NFAState> getTo = start.getTo(c); // get set of next states 
 				if (getTo != null) {
 					
-					
-					//TODO: delete print statements
-					System.out.println("Has a  " + c);	
-					System.out.println("Get to  " + getTo);	
 					
 				for (NFAState s : getTo) {
 					if(s.hasNextE()) { // check each next state for e closure
@@ -202,10 +195,6 @@ public class NFA implements NFAInterface {
 		Set<NFAState> visited = new LinkedHashSet<NFAState>();
 		visited = eClosureHelper(s, visited);
 		
-		//TODO: delete print statements
-		System.out.println("eClosure for " + s.getName());
-		System.out.println(visited);
-		
 		return null;
 	}
 	
@@ -228,9 +217,6 @@ public class NFA implements NFAInterface {
 			visited.add(state);
 			visited.addAll(eClosureHelper(state, visited));
 			
-			//TODO: delete print statements
-			System.out.println("eClosure step " + s.getName());
-			System.out.println(visited);
 		}
 		
 		return visited;

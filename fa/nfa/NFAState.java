@@ -43,20 +43,17 @@ public class NFAState extends State{
 			//System.out.println("in for loop");
 			if(set.getValue().delta.get(onSymb) != null) {
 				ret.add(set.getValue().delta.get(onSymb));
-				System.out.println(set.getValue().delta.get(onSymb));
 			}
 		}
-		System.out.println(ret);
+
 		return ret;	
 	}
 	
 	public boolean hasNextE() {
-		System.out.println("Delta entry set");
-		System.out.println(delta.entrySet());	
-		
-		
+
+				
 		for(Entry<Character, NFAState> set: delta.entrySet()) {
-			System.out.println(set);
+
 			if (set.getKey() == 'e') {
 				return true;
 			}
@@ -66,7 +63,6 @@ public class NFAState extends State{
 
 	public void addTransition(char onSymb, NFAState to) {
 		delta.put(onSymb, to);
-		System.out.println(delta.toString());
 	}
 
 	public boolean isFinal() {
