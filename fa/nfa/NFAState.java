@@ -51,7 +51,7 @@ public class NFAState extends State{
 		
 		
 		}
-		System.out.println(ret.toString());
+		System.out.println(ret);
 		return ret;	
 	}
 	
