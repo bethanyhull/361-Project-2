@@ -68,7 +68,6 @@ public class NFAState extends State{
 
 	public void addTransition(char onSymb, NFAState to) {
 		delta.put(onSymb, to);
-		//set.add
 	}
 
 	public boolean isFinal() {
