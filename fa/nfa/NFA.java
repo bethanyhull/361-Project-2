@@ -149,6 +149,7 @@ public class NFA implements NFAInterface {
 		
 		
 		DFA dfa = new DFA();
+		dfa.addStartState(start.getName());
 		Queue<Set<NFAState>> nq = new LinkedList<Set<NFAState>>(); //Queue of NFA sets
 					//Queue<DFAState> dq = new LinkedList<DFAState>();
 					//DFAState dfaStart = new DFAState(start.getName());
@@ -191,12 +192,17 @@ public class NFA implements NFAInterface {
 									}
 								}
 							}
-							//add check
 														
 							//Add state name and transitions to DFA state
 							String nextDFAName = ""; // create new name of DFA state
+							Boolean isFinal = false;
 							for (NFAState s : getTo) {
 								nextDFAName = nextDFAName + s.getName();
+								for(State f : getFinalStates()) {
+									if(f.getName().equals(s.getName())) {
+										isFinal = true;
+									}
+								}
 							}
 							
 							Boolean inDFA = false;
@@ -208,7 +214,12 @@ public class NFA implements NFAInterface {
 							}
 							
 							if(!inDFA) {
-								dfa.addState(nextDFAName);
+								//check if final
+								if(isFinal) {
+									dfa.addFinalState(nextDFAName);
+								}else {
+									dfa.addState(nextDFAName);
+								}
 								nq.add(getTo); //add new set to queue
 							}
 							
