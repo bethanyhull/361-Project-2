@@ -151,7 +151,7 @@ public class NFA implements NFAInterface {
 					
 				for (NFAState s : getTo) {
 					if(s.hasNextE()) { // check each next state for e closure
-						System.out.println(s + " has next e: " + s.hasNextE());	
+						
 						//TODO: BUG AT eClosure!!!!!
 						// what happens of in the course of the if there is a loop back to the original state?
 						//Like in test 0? Creates endless loop -> stack overflow error when run.
@@ -175,8 +175,8 @@ public class NFA implements NFAInterface {
 				}
 				
 				dfa.addState(newStateName);
-				DFAState newState = new DFAState(newStateName);
-				dfa.getStartState().addTransition(c, newState);
+				dfa.addTransition(dfa.getStartState().getName(), c, newStateName);
+
 				
 				//eclosure
 			}	//if
@@ -205,8 +205,6 @@ public class NFA implements NFAInterface {
 		}
 		
 		Set<NFAState> newStates = s.getTo('e');
-		System.out.println("New States from " + s.getName() + " on eClosure" );
-		System.out.println(newStates);
 		
 		for (NFAState state: newStates) {
 			for(NFAState visitedState : visited) {
