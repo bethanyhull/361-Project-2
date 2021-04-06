@@ -129,71 +129,96 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public DFA getDFA() {
-		// TODO Auto-generated method stub
-		// each DFA state corresponds to a set of NFA states.You should track
-		// inside getDFA() method whether a DFA state with the label(name) corresponding to the
-		// string representation of the NFA states has been created or not. There is no requirements
-		// on the order in which NFA states appear in a DFA’s label.
+				// TODO Auto-generated method stub
+				// each DFA state corresponds to a set of NFA states.You should track
+				// inside getDFA() method whether a DFA state with the label(name) corresponding to the
+				// string representation of the NFA states has been created or not. There is no requirements
+				// on the order in which NFA states appear in a DFA’s label.
+				
+				// The implementation of public DFA getDFA() will require walking through an NFA, i.e.,
+				// traversing a graph. To do so, you must implement the breadth-first search (BFS)
+				// algorithm ( a loop iterating over a queue; an element of a queue is a set of NFA states).
+				// Create a private method for this maybe??
 		
-		// The implementation of public DFA getDFA() will require walking through an NFA, i.e.,
-		// traversing a graph. To do so, you must implement the breadth-first search (BFS)
-		// algorithm ( a loop iterating over a queue; an element of a queue is a set of NFA states).
-		// Create a private method for this maybe??
+		//Psudocode
+		//Create queue of SETS of NFA's. First set will always be the start state-- DONE
+		//loop while queue is not empty-- DONE
+		//on each char loop through set of NFA's to create DFA states and transitions 
+		//add all NFA's in poweer set to NFA set
+		//put in queue and repeat
+		
 		
 		DFA dfa = new DFA();
-		Queue<NFAState> nq = new LinkedList<NFAState>();
-		Queue<DFAState> dq = new LinkedList<DFAState>();
-		//DFAState dfaStart = new DFAState(start.getName());
-		dfa.addStartState(start.getName());
-		//q.add(dfa.getStartState());
-		//for each state
+		Queue<Set<NFAState>> nq = new LinkedList<Set<NFAState>>(); //Queue of NFA sets
+					//Queue<DFAState> dq = new LinkedList<DFAState>();
+					//DFAState dfaStart = new DFAState(start.getName());
+		
+		//Create set with start state and put it in the queue
+		LinkedHashSet<NFAState> start = new LinkedHashSet<NFAState>();
+		start.add((NFAState) getStartState());
+		nq.add(start);
+					//dfa.addStartState(start.getName());
+					//q.add(dfa.getStartState());
+		
+		//for each set of NFAstates dequeued
 		while(!nq.isEmpty()) {
 			
-			NFAState ncurrent = nq.remove();
-			DFAState dcurrent = dq.remove();
+			Set<NFAState> ncurrent = nq.remove();
+					//DFAState dcurrent = dq.remove();
 			
-			for(Character c : abc) {			
-				
-				Set<NFAState> getTo = start.getTo(c); // get set of next states 
-				if (getTo != null) {
-					
-					
-				for (NFAState s : getTo) {
-					if(s.hasNextE()) { // check each next state for e closure
+			String currentDFAName = "";
+			for (NFAState n : ncurrent) {
+				currentDFAName += n;
+			}
+			
+			for(Character c : abc) {
+				if(c != 'e') {
+				LinkedHashSet<NFAState> nextSet = new LinkedHashSet<NFAState>();
+					for(NFAState state : ncurrent) {
+						Set<NFAState> getTo = state.getTo(c);
 						
-						//TODO: BUG AT eClosure!!!!!
-						// what happens of in the course of the if there is a loop back to the original state?
-						//Like in test 0? Creates endless loop -> stack overflow error when run.
-						if(eClosure(s) != null) {
-							Set<NFAState> setWithE = eClosure(s);
-							//TODO: delete print statements
-							System.out.println("eClosure set " + s.getName());
-							System.out.println(setWithE);
+						if (getTo != null) {
 							
-							getTo.addAll(setWithE);
-						}
+							for (NFAState s : getTo) {
+								if(s.hasNextE()) { // check each next state for e closure
+									
 						
-
+									if(eClosure(s) != null) {
+										Set<NFAState> setWithE = eClosure(s);
+		
+										getTo.addAll(setWithE);
+									}
+								}
+							}
+							
+							nq.add(getTo); //add new set to queue
+							
+							//Add state name and transitions to DFA state
+							String nextDFAName = ""; // create new name of DFA state
+							for (NFAState s : getTo) {
+								nextDFAName = nextDFAName + s.getName();
+							}
+							
+							dfa.addState(nextDFAName);
+							
+							dfa.addTransition(currentDFAName, c, nextDFAName);
+							
+							//eclosure
+							}
+						
 					}
-				}
 				
-				
-				String newStateName = ""; // create new name of DFA state
-				for (NFAState s : getTo) {
-					newStateName = newStateName + s.getName();
-				}
-				
-				dfa.addState(newStateName);
-				dfa.addTransition(dfa.getStartState().getName(), c, newStateName);
-
-				
-				//eclosure
-				}	//if
+				/////////////////////////////////////////////////////////////////
+				// refactor stopping point. Not sure whats happening below this line....
+				 
+	//if
 			}
 			//add new states to queue
-		}
+		}}
+			
 		System.out.println(dfa.toString());
-		return null;
+		return dfa;
+		
 		
 	}
 
