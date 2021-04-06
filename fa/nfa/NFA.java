@@ -227,7 +227,7 @@ public class NFA implements NFAInterface {
 			//add new states to queue
 		}}
 			
-		System.out.println(dfa.toString());
+		//System.out.println(dfa.toString());
 		return dfa;
 		
 		
