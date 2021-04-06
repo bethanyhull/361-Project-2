@@ -207,9 +207,9 @@ public class NFA implements NFAInterface {
 								}
 							}
 							
-							if(!inDFA) {
+							//if(!inDFA) {
 								dfa.addState(nextDFAName);
-							}
+							//}
 							
 							dfa.addTransition(currentDFAName, c, nextDFAName);
 							
