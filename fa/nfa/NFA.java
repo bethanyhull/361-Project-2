@@ -199,7 +199,17 @@ public class NFA implements NFAInterface {
 								nextDFAName = nextDFAName + s.getName();
 							}
 							
-							dfa.addState(nextDFAName);
+							Boolean inDFA = false;
+							
+							for(DFAState dstate : dfa.getStates()) {
+								if(dstate.getName().equals(nextDFAName)) {
+									inDFA = true;
+								}
+							}
+							
+							if(!inDFA) {
+								dfa.addState(nextDFAName);
+							}
 							
 							dfa.addTransition(currentDFAName, c, nextDFAName);
 							
