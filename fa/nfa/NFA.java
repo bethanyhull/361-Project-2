@@ -154,9 +154,10 @@ public class NFA implements NFAInterface {
 					//DFAState dfaStart = new DFAState(start.getName());
 		
 		//Create set with start state and put it in the queue
-		LinkedHashSet<NFAState> start = new LinkedHashSet<NFAState>();
-		start.add((NFAState) getStartState());
-		nq.add(start);
+		LinkedHashSet<NFAState> startSet = new LinkedHashSet<NFAState>();
+		//??
+		startSet.add((NFAState) getStartState());
+		nq.add(startSet);
 					//dfa.addStartState(start.getName());
 					//q.add(dfa.getStartState());
 		
@@ -190,9 +191,8 @@ public class NFA implements NFAInterface {
 									}
 								}
 							}
-							
-							nq.add(getTo); //add new set to queue
-							
+							//add check
+														
 							//Add state name and transitions to DFA state
 							String nextDFAName = ""; // create new name of DFA state
 							for (NFAState s : getTo) {
@@ -209,6 +209,7 @@ public class NFA implements NFAInterface {
 							
 							if(!inDFA) {
 								dfa.addState(nextDFAName);
+								nq.add(getTo); //add new set to queue
 							}
 							
 							dfa.addTransition(currentDFAName, c, nextDFAName);
