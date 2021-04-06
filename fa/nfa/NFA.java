@@ -187,12 +187,21 @@ public class NFA implements NFAInterface {
 						
 									if(eClosure(s) != null) {
 										Set<NFAState> setWithE = eClosure(s);
+										
+										//TODO: Delete print statement
+										System.out.println("Eclosure");
+										System.out.println(setWithE);
 		
 										getTo.addAll(setWithE);
 									}
 								}
 							}
-														
+							
+							
+							//TODO: Delete print statement
+							System.out.println("Get to");
+							System.out.println(getTo);
+							
 							//Add state name and transitions to DFA state
 							String nextDFAName = ""; // create new name of DFA state
 							Boolean isFinal = false;
@@ -254,14 +263,18 @@ public class NFA implements NFAInterface {
 		Set<NFAState> visited = new LinkedHashSet<NFAState>();
 		visited = eClosureHelper(s, visited);
 		
-		return null;
+		return visited;
 	}
 	
 	
 	private Set<NFAState> eClosureHelper(NFAState s, Set<NFAState> visited ) {
 		if (!s.hasNextE()) {
+			if (visited.size() == 0) {
+				return null;
+			}
 			return visited;
 		}
+		
 		
 		Set<NFAState> newStates = s.getTo('e');
 		
