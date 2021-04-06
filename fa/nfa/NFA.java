@@ -1,6 +1,8 @@
 package fa.nfa;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import fa.State;
@@ -139,11 +141,18 @@ public class NFA implements NFAInterface {
 		// Create a private method for this maybe??
 		
 		DFA dfa = new DFA();
-		//Queue<NFAState> q = new Queue<NFAState>();
+		Queue<NFAState> nq = new LinkedList<NFAState>();
+		Queue<DFAState> dq = new LinkedList<DFAState>();
 		//DFAState dfaStart = new DFAState(start.getName());
 		dfa.addStartState(start.getName());
+		//q.add(dfa.getStartState());
 		//for each state
-			for(Character c : abc) {
+		while(!nq.isEmpty()) {
+			
+			NFAState ncurrent = nq.remove();
+			DFAState dcurrent = dq.remove();
+			
+			for(Character c : abc) {			
 				
 				Set<NFAState> getTo = start.getTo(c); // get set of next states 
 				if (getTo != null) {
@@ -179,10 +188,13 @@ public class NFA implements NFAInterface {
 
 				
 				//eclosure
-			}	//if
+				}	//if
 			}
+			//add new states to queue
+		}
 		System.out.println(dfa.toString());
 		return null;
+		
 	}
 
 	@Override
