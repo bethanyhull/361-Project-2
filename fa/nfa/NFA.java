@@ -189,7 +189,7 @@ public class NFA implements NFAInterface {
 										Set<NFAState> setWithE = eClosure(s);
 										
 										//TODO: Delete print statement
-										System.out.println("Eclosure");
+										System.out.println("Eclosure for " + state.getName());
 										System.out.println(setWithE);
 		
 										getTo.addAll(setWithE);

@@ -38,14 +38,19 @@ public class NFAState extends State{
 
 	public Set<NFAState> getTo(char onSymb) {
 		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
-		//System.out.println(delta.entrySet());
+//		System.out.println("NFA transition sets for state " + getName() + " on " + onSymb);
+//		System.out.println(delta.entrySet());
 		for(Entry<Character, NFAState> set : delta.entrySet()) {
-			//System.out.println("in for loop");
-			if(set.getValue().delta.get(onSymb) != null) {
-				ret.add(set.getValue().delta.get(onSymb));
+			System.out.println("in for loop");
+			System.out.println(set.getValue().delta.containsKey('e'));
+			System.out.println(delta);
+
+			if(set.getValue().delta.containsKey(onSymb)) {
+				ret.add(set.getValue());
 			}
 		}
-
+		
+//		System.out.println("return set" + ret);
 		return ret;	
 	}
 	
