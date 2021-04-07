@@ -171,50 +171,26 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public DFA getDFA() {
-				// TODO Auto-generated method stub
-				// each DFA state corresponds to a set of NFA states.You should track
-				// inside getDFA() method whether a DFA state with the label(name) corresponding to the
-				// string representation of the NFA states has been created or not. There is no requirements
-				// on the order in which NFA states appear in a DFA’s label.
-				
-				// The implementation of public DFA getDFA() will require walking through an NFA, i.e.,
-				// traversing a graph. To do so, you must implement the breadth-first search (BFS)
-				// algorithm ( a loop iterating over a queue; an element of a queue is a set of NFA states).
-				// Create a private method for this maybe??
-		
-		//Psudocode
-		//Create queue of SETS of NFA's. First set will always be the start state-- DONE
-		//loop while queue is not empty-- DONE
-		//on each char loop through set of NFA's to create DFA states and transitions 
-		//add all NFA's in poweer set to NFA set
-		//put in queue and repeat
-		
-		
+		//create a new DFA
 		DFA dfa = new DFA();
-		
-		Queue<Set<NFAState>> nq = new LinkedList<Set<NFAState>>(); //Queue of NFA sets
-					//Queue<DFAState> dq = new LinkedList<DFAState>();
-					//DFAState dfaStart = new DFAState(start.getName());
+		//Create a queue of NFA sets for traversal
+		Queue<Set<NFAState>> nq = new LinkedList<Set<NFAState>>();
 		
 		//Create set with start state and put it in the queue
 		TreeSet<NFAState> startSet = new TreeSet<NFAState>();
-		//??
 		startSet.add((NFAState) getStartState());
 		dfa.addStartState(startSet.toString());
 		nq.add(startSet);
-					//dfa.addStartState(start.getName());
-					//q.add(dfa.getStartState());
 		
 		//for each set of NFAstates dequeued
 		while(!nq.isEmpty()) {
 			
-			Set<NFAState> ncurrent = nq.remove();
-					//DFAState dcurrent = dq.remove();
+			Set<NFAState> ncurrent = nq.remove();			
 			
-			
+			//
 			for(Character c : abc) {
 				if(c != 'e') {
-				Set<NFAState> getTo = new TreeSet<NFAState>();
+					Set<NFAState> getTo = new TreeSet<NFAState>();
 					for(NFAState state : ncurrent) {
 						getTo.addAll(state.getTo(c));
 						
@@ -222,77 +198,47 @@ public class NFA implements NFAInterface {
 							
 							for (NFAState s : getTo) {
 								if(s.hasNextE()) { // check each next state for e closure
-									
-						
 									if(eClosure(s) != null) {
-										Set<NFAState> setWithE = eClosure(s);
-										
-//										//TODO: Delete print statement
-//										System.out.println("Eclosure for " + state.getName());
-//										System.out.println(setWithE);
-		
+										//add the states from eclosure to getTo set
+										Set<NFAState> setWithE = eClosure(s);		
 										getTo.addAll(setWithE);
 									}
 								}
 							}
 						}
+					}							
+					//Add state name and transitions to DFA state
+					Boolean isFinal = false;
+					for (NFAState s : getTo) {
+						for(State f : getFinalStates()) {
+							if(f.getName().equals(s.getName())) {
+								isFinal = true;
+							}
+						}
 					}
-//							//TODO: Delete print statement
-//							System.out.println("Get to");
-//							System.out.println(getTo);
 							
-							//Add state name and transitions to DFA state
-							Boolean isFinal = false;
-							for (NFAState s : getTo) {
-								for(State f : getFinalStates()) {
-									if(f.getName().equals(s.getName())) {
-										isFinal = true;
-									}
-								}
-							}
+					Boolean inDFA = false;
 							
-							Boolean inDFA = false;
+					for(DFAState dstate : dfa.getStates()) {
+						if(dstate.getName().equals(getTo.toString())) {
+							inDFA = true;
+						}
+					}
 							
-//							char[] newStateArray = nextDFAName.toCharArray();
-//							Arrays.sort(newStateArray);
-//							nextDFAName = newStateArray.toString();
+					if(!inDFA) {
+						//check if final
+						if(isFinal) {
+							dfa.addFinalState(getTo.toString());
+						}else {
+							dfa.addState(getTo.toString());
+						}
+						nq.add(getTo); //add new set to queue
+					}
 							
-							for(DFAState dstate : dfa.getStates()) {
-								
-								if(dstate.getName().equals(getTo.toString())) {
-									inDFA = true;
-								}
-							}
-							
-							if(!inDFA) {
-								//check if final
-								if(isFinal) {
-									dfa.addFinalState(getTo.toString());
-								}else {
-									dfa.addState(getTo.toString());
-								}
-								nq.add(getTo); //add new set to queue
-							}
-							
-							dfa.addTransition(ncurrent.toString(), c, getTo.toString());
-							
-							//eclosure
-							
-						
-					
-				
-				/////////////////////////////////////////////////////////////////
-				// refactor stopping point. Not sure whats happening below this line....
-				 
-	//if
+					dfa.addTransition(ncurrent.toString(), c, getTo.toString());
 			}
-			//add new states to queue
 		}}
-			
-		//System.out.println(dfa.toString());
 		return dfa;
-		
-		
 	}
 
 	@Override
