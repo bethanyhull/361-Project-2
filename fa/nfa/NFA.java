@@ -217,17 +217,13 @@ public class NFA implements NFAInterface {
 							
 							Boolean inDFA = false;
 							
+							char[] newStateArray = nextDFAName.toCharArray();
+							Arrays.sort(newStateArray);
+							nextDFAName = newStateArray.toString();
+							
 							for(DFAState dstate : dfa.getStates()) {
-								char[] dStateArray = dstate.getName().toCharArray();
-								Arrays.sort(dStateArray);
-								char[] newStateArray = nextDFAName.toCharArray();
-								Arrays.sort(newStateArray);
 								
-								//String dStateString = dStateArray.toString();
-								//String newStateString = newStateArray.toString();
-								nextDFAName = newStateArray.toString();
-								
-								if(dStateArray.toString().equals(newStateArray.toString())) {
+								if(dstate.getName().equals(newStateArray.toString())) {
 									inDFA = true;
 								}
 							}
