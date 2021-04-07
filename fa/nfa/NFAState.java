@@ -55,15 +55,20 @@ public class NFAState extends State{
 	}
 	
 	public boolean hasNextE() {
-
-				
-		for(Entry<Character, NFAState> set: delta.entrySet()) {
-
-			if (set.getKey() == 'e') {
-				return true;
-			}
+		
+		if(delta.containsKey('e')) {
+			return true;
 		}
-		return false;
+
+		return false;	
+		
+//		for(Entry<Character, NFAState> set: delta.entrySet()) {
+//
+//			if (set.getKey() == 'e') {
+//				return true;
+//			}
+//		}
+//		return false;
 	}
 
 	public void addTransition(char onSymb, NFAState to) {
