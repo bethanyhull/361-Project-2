@@ -33,7 +33,7 @@ had the values as NFAState rather than a set of NFAStates. Since maps cannot hav
 caused problems. This was an easy fix though, and it made the getTo() method much simpler. The getDFA() method was
 difficult because it involved a while loop, multiple for loops, and several if statements. This made it difficult to 
 keep organized. While writing the getDFA() method, we knew we would need to check if multiple sets of states
-were equivalent but in a different order. We eventually converted our Sets to Tree Sets to keep them organized. 
+were equivalent but in a different order. We eventually converted our Linked Hash Sets to Tree Sets to keep them ordered. 
 We figured out the build path, so we were able to run the program in Eclipse (since in the last project we were only
 able to run on the command line). Overall, this project went well. We realized that we often made things more complicated
 than they needed to be. We also found that it helped a lot to take breaks after a certain amount of time working on the 
