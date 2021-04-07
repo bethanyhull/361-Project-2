@@ -176,9 +176,9 @@ public class NFA implements NFAInterface {
 			
 			for(Character c : abc) {
 				if(c != 'e') {
-				LinkedHashSet<NFAState> nextSet = new LinkedHashSet<NFAState>();
+				Set<NFAState> getTo = new LinkedHashSet<NFAState>();
 					for(NFAState state : ncurrent) {
-						Set<NFAState> getTo = state.getTo(c);
+						getTo = state.getTo(c);
 						
 						if (getTo != null) {
 							
@@ -189,19 +189,19 @@ public class NFA implements NFAInterface {
 									if(eClosure(s) != null) {
 										Set<NFAState> setWithE = eClosure(s);
 										
-										//TODO: Delete print statement
-										System.out.println("Eclosure for " + state.getName());
-										System.out.println(setWithE);
+//										//TODO: Delete print statement
+//										System.out.println("Eclosure for " + state.getName());
+//										System.out.println(setWithE);
 		
 										getTo.addAll(setWithE);
 									}
 								}
 							}
 						}
-							
-							//TODO: Delete print statement
-							System.out.println("Get to");
-							System.out.println(getTo);
+					}
+//							//TODO: Delete print statement
+//							System.out.println("Get to");
+//							System.out.println(getTo);
 							
 							//Add state name and transitions to DFA state
 							String nextDFAName = ""; // create new name of DFA state
@@ -245,7 +245,7 @@ public class NFA implements NFAInterface {
 							dfa.addTransition(currentDFAName, c, nextDFAName);
 							
 							//eclosure
-							}
+							
 						
 					
 				
