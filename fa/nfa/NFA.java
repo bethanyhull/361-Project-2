@@ -169,6 +169,10 @@ public class NFA implements NFAInterface {
 		return abc;
 	}
 
+	/**
+	 * Creates a DFA from the NFA
+	 * 	uses eClosure
+	 */
 	@Override
 	public DFA getDFA() {
 		//create a new DFA
@@ -187,7 +191,7 @@ public class NFA implements NFAInterface {
 			
 			Set<NFAState> ncurrent = nq.remove();			
 			
-			//
+			//loops through each character that is not 'e' to complete transitions
 			for(Character c : abc) {
 				if(c != 'e') {
 					Set<NFAState> getTo = new TreeSet<NFAState>();
@@ -206,8 +210,11 @@ public class NFA implements NFAInterface {
 								}
 							}
 						}
-					}							
+					}			
+					
 					//Add state name and transitions to DFA state
+					
+					//check if the state is final
 					Boolean isFinal = false;
 					for (NFAState s : getTo) {
 						for(State f : getFinalStates()) {
@@ -216,15 +223,16 @@ public class NFA implements NFAInterface {
 							}
 						}
 					}
-							
-					Boolean inDFA = false;
-							
+						
+					//check if the state already exists in the DFA
+					Boolean inDFA = false;		
 					for(DFAState dstate : dfa.getStates()) {
 						if(dstate.getName().equals(getTo.toString())) {
 							inDFA = true;
 						}
 					}
 							
+					//add the state to DFA if it is not already
 					if(!inDFA) {
 						//check if final
 						if(isFinal) {
@@ -234,10 +242,11 @@ public class NFA implements NFAInterface {
 						}
 						nq.add(getTo); //add new set to queue
 					}
-							
+					//create the transition		
 					dfa.addTransition(ncurrent.toString(), c, getTo.toString());
-			}
-		}}
+				}//end if
+			}//end for
+		}//end while
 		return dfa;
 	}
 
