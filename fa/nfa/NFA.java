@@ -172,6 +172,7 @@ public class NFA implements NFAInterface {
 	/**
 	 * Creates a DFA from the NFA
 	 * 	uses eClosure
+	 * @return DFA version of the NFA
 	 */
 	@Override
 	public DFA getDFA() {
@@ -250,21 +251,38 @@ public class NFA implements NFAInterface {
 		return dfa;
 	}
 
+	/**
+	 * @param from state
+	 * @param onSymb character to transition on 
+	 * @return NFAState transitioned to
+	 */
 	@Override
 	public Set<NFAState> getToState(NFAState from, char onSymb) {
 		return from.getTo(onSymb);
 	}
 
+	/**
+	 * This method creates a set to hold the visited state and calls the recursive helper method to find eClosure
+	 * @param s the state to determine eclosure for
+	 * @return the set of NFAStates that can be transitioned to on 'e'
+	 */
 	@Override
 	public Set<NFAState> eClosure(NFAState s) {
 		Set<NFAState> visited = new TreeSet<NFAState>();
+		//invoke recursive helper
 		visited = eClosureHelper(s, visited);
 		
 		return visited;
 	}
 	
-	
+	/**
+	 * Recursive method to determine the set of eclosure states
+	 * @param s the current state to find eclosure for
+	 * @param visited the set of states visited on 'e' transitions
+	 * @return the set of visited states
+	 */
 	private Set<NFAState> eClosureHelper(NFAState s, Set<NFAState> visited ) {
+		//check if eClosure is possible on the given state
 		if (!s.hasNextE()) {
 			if (visited.size() == 0) {
 				return null;
@@ -272,12 +290,12 @@ public class NFA implements NFAInterface {
 			return visited;
 		}
 		
-		
 		Set<NFAState> newStates = s.getTo('e');
 		
 		for (NFAState state: newStates) {
 			for(NFAState visitedState : visited) {
 				if(state.getName().equals(visitedState.getName())) {
+					//if the current state is already in visited, return to avoid an infinite loop
 					return visited;
 				}
 			}
@@ -287,11 +305,7 @@ public class NFA implements NFAInterface {
 		}
 		
 		return visited;
-		
-		
-	}
 
-	
-	
+	}
 
 }
