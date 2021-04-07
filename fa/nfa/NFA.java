@@ -196,7 +196,7 @@ public class NFA implements NFAInterface {
 									}
 								}
 							}
-							
+						}
 							
 							//TODO: Delete print statement
 							System.out.println("Get to");
@@ -237,7 +237,7 @@ public class NFA implements NFAInterface {
 							//eclosure
 							}
 						
-					}
+					
 				
 				/////////////////////////////////////////////////////////////////
 				// refactor stopping point. Not sure whats happening below this line....
