@@ -11,20 +11,31 @@ import fa.State;
 import fa.dfa.DFA;
 import fa.dfa.DFAState;
 
+/**
+ * 
+ * NFA implementation that can convert to a DFA
+ * @author Bethany Hull and Marie Phelan
+ *
+ */
+
 public class NFA implements NFAInterface {
 	
-//	Use correct data-structures for each of NFA’s element, e.g., set of states should be
-//	modeled by a class implementing java.util.Set interface- probably use the ones in th DFA class
-	private Set<NFAState> states;
-	private NFAState start;
-	private Set<Character> abc;
+	private Set<NFAState> states;//set of states in the NFA
+	private NFAState start;//keeps track of the start state
+	private Set<Character> abc;//alphabet for the NFA
 	
-	
+	/**
+	 * Default constructor of an NFA
+	 */
 	public NFA() {
 		states = new TreeSet<NFAState>();
 		abc = new TreeSet<Character>();
 	}
 	
+	/**
+	 * Creates a start state for the NFA
+	 * @param name of the start state
+	 */
 	@Override
 	public void addStartState(String name) {
 		NFAState s = checkIfExists(name);
@@ -41,7 +52,7 @@ public class NFA implements NFAInterface {
 	/**
 	 * Check if a state with such name already exists
 	 * @param name
-	 * @return null if no state exist, or NFAState object otherwise.
+	 * @return null if no state exists, or NFAState object otherwise.
 	 */
 	private NFAState checkIfExists(String name) {
 		NFAState ret = null;
@@ -54,12 +65,18 @@ public class NFA implements NFAInterface {
 		return ret;
 	}
 
+	/**
+	 * Adds a state to the NFA
+	 * @param s the state to be added to the NFA
+	 */
 	private void addState(NFAState s) {
-		
 		states.add(s);
-		
 	}
 
+	/**
+	 * Adds a state with the given name to the NFA
+	 * @param name of the new state
+	 */
 	@Override
 	public void addState(String name) {
 		NFAState s = checkIfExists(name);
@@ -72,6 +89,10 @@ public class NFA implements NFAInterface {
 		
 	}
 
+	/**
+	 * Adds a final state with the given name to the NFA
+	 * @param name of the new state
+	 */
 	@Override
 	public void addFinalState(String name) {
 		NFAState s = checkIfExists(name);
@@ -81,11 +102,17 @@ public class NFA implements NFAInterface {
 		} else {
 			System.out.println("WARNING: A state with name " + name + " already exists in the NFA");
 		}
-		
 	}
 
+	/**
+	 * Creates a transition from a given state to another on a given character
+	 * @param fromState the state to add the transition to
+	 * @param onSymb the symbol to transition on
+	 * @param toState the state to transition to
+	 */
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
+		//ensure that the given states exist
 		NFAState from = checkIfExists(fromState);
 		NFAState to = checkIfExists(toState);
 		if(from == null){
@@ -95,20 +122,26 @@ public class NFA implements NFAInterface {
 			System.err.println("ERROR: No NFA state exists with name " + toState);
 			System.exit(2);
 		}
+		//add the transition
 		from.addTransition(onSymb, to);
-		
+		//If the symbol is not already in the alphabet, add it 
 		if(!abc.contains(onSymb)){
 			abc.add(onSymb);
 		}
 		
 	}
 
+	/**
+	 * @return the set of states for the NFA
+	 */
 	@Override
 	public Set<? extends State> getStates() {
-		
 		return states;
 	}
 
+	/**
+	 * @return the set of final states for the NFA
+	 */
 	@Override
 	public Set<? extends State> getFinalStates() {
 		Set<NFAState> ret = new TreeSet<NFAState>();
@@ -120,11 +153,17 @@ public class NFA implements NFAInterface {
 		return ret;
 	}
 
+	/**
+	 * @return the start state for the NFA
+	 */
 	@Override
 	public State getStartState() {
 		return start;
 	}
 
+	/**
+	 * @return the alphabet for the NFA
+	 */
 	@Override
 	public Set<Character> getABC() {
 		return abc;
