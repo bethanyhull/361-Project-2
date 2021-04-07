@@ -1,5 +1,6 @@
 package fa.nfa;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -217,7 +218,16 @@ public class NFA implements NFAInterface {
 							Boolean inDFA = false;
 							
 							for(DFAState dstate : dfa.getStates()) {
-								if(dstate.getName().equals(nextDFAName)) {
+								char[] dStateArray = dstate.getName().toCharArray();
+								Arrays.sort(dStateArray);
+								char[] newStateArray = nextDFAName.toCharArray();
+								Arrays.sort(newStateArray);
+								
+								//String dStateString = dStateArray.toString();
+								//String newStateString = newStateArray.toString();
+								nextDFAName = newStateArray.toString();
+								
+								if(dStateArray.toString().equals(newStateArray.toString())) {
 									inDFA = true;
 								}
 							}
