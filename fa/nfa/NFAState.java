@@ -12,7 +12,7 @@ import fa.dfa.DFAState;
 public class NFAState extends State{
 
 	//private HashMap<Character, Set<NFAState>> delta;//delta
-	private HashMap<Character, NFAState> delta;
+	private HashMap<Character,LinkedHashSet<NFAState>> delta;
 	private boolean isFinal;//remembers its type
 	
 	/**
@@ -21,7 +21,7 @@ public class NFAState extends State{
 	 */
 	public NFAState(String name) {
 		this.name = name;
-		delta = new HashMap<Character, NFAState>();
+		delta = new HashMap<Character, LinkedHashSet<NFAState>>();
 		isFinal = false;
 	}
 
@@ -32,25 +32,16 @@ public class NFAState extends State{
 	 */
 	public NFAState(String name, boolean b) {
 		this.name = name;
-		delta = new HashMap<Character, NFAState>();
+		delta = new HashMap<Character, LinkedHashSet<NFAState>>();
 		this.isFinal = b;
 	}
 
 	public Set<NFAState> getTo(char onSymb) {
 		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
-//		System.out.println("NFA transition sets for state " + getName() + " on " + onSymb);
-//		System.out.println(delta.entrySet());
-		for(Entry<Character, NFAState> set : delta.entrySet()) {
-			System.out.println("in for loop");
-			System.out.println(set.getValue().delta.containsKey('e'));
-			System.out.println(delta);
 
-			if(set.getValue().delta.containsKey(onSymb)) {
-				ret.add(set.getValue());
-			}
+		if (delta.containsKey(onSymb)) {
+			ret = delta.get(onSymb);
 		}
-		
-//		System.out.println("return set" + ret);
 		return ret;	
 	}
 	
@@ -72,7 +63,18 @@ public class NFAState extends State{
 	}
 
 	public void addTransition(char onSymb, NFAState to) {
-		delta.put(onSymb, to);
+		if (!delta.containsKey(onSymb)) {
+			LinkedHashSet<NFAState> f = new LinkedHashSet<NFAState>();
+			f.add(to);
+			delta.put(onSymb, f);
+		}else {
+			LinkedHashSet<NFAState> g = delta.remove(onSymb);
+			g.add(to);
+			delta.put(onSymb, g);
+	
+		}
+		
+		
 	}
 
 	public boolean isFinal() {
