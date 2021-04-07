@@ -42,7 +42,7 @@ public class NFAState extends State{
 		if (delta.containsKey(onSymb)) {
 			ret = delta.get(onSymb);
 		}
-		System.out.println(ret);
+//		System.out.println(ret);
 		return ret;	
 	}
 	
