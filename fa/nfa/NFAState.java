@@ -1,7 +1,7 @@
 package fa.nfa;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.TreeSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -9,10 +9,10 @@ import java.util.Set;
 import fa.State;
 import fa.dfa.DFAState;
 
-public class NFAState extends State{
+public class NFAState extends State implements Comparable<NFAState> {
 
 	//private HashMap<Character, Set<NFAState>> delta;//delta
-	private HashMap<Character,LinkedHashSet<NFAState>> delta;
+	private HashMap<Character,TreeSet<NFAState>> delta;
 	private boolean isFinal;//remembers its type
 	
 	/**
@@ -21,7 +21,7 @@ public class NFAState extends State{
 	 */
 	public NFAState(String name) {
 		this.name = name;
-		delta = new HashMap<Character, LinkedHashSet<NFAState>>();
+		delta = new HashMap<Character, TreeSet<NFAState>>();
 		isFinal = false;
 	}
 
@@ -32,12 +32,12 @@ public class NFAState extends State{
 	 */
 	public NFAState(String name, boolean b) {
 		this.name = name;
-		delta = new HashMap<Character, LinkedHashSet<NFAState>>();
+		delta = new HashMap<Character, TreeSet<NFAState>>();
 		this.isFinal = b;
 	}
 
 	public Set<NFAState> getTo(char onSymb) {
-		Set<NFAState> ret = new LinkedHashSet<NFAState>();// = delta.get(onSymb);
+		Set<NFAState> ret = new TreeSet<NFAState>();// = delta.get(onSymb);
 
 		if (delta.containsKey(onSymb)) {
 			ret = delta.get(onSymb);
@@ -65,11 +65,11 @@ public class NFAState extends State{
 
 	public void addTransition(char onSymb, NFAState to) {
 		if (!delta.containsKey(onSymb)) {
-			LinkedHashSet<NFAState> f = new LinkedHashSet<NFAState>();
+			TreeSet<NFAState> f = new TreeSet<NFAState>();
 			f.add(to);
 			delta.put(onSymb, f);
 		}else {
-			LinkedHashSet<NFAState> g = delta.remove(onSymb);
+			TreeSet<NFAState> g = delta.remove(onSymb);
 			g.add(to);
 			delta.put(onSymb, g);
 	
@@ -80,6 +80,11 @@ public class NFAState extends State{
 
 	public boolean isFinal() {
 		return isFinal;
+	}
+
+	@Override
+	public int compareTo(NFAState o) {
+		return getName().compareTo(o.getName());
 	}
 	
 	// If your implementation requires it, you can add additional instance variables and methods to your NFAState

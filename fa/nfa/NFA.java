@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeSet;
 
 import fa.State;
 import fa.dfa.DFA;
@@ -20,8 +21,8 @@ public class NFA implements NFAInterface {
 	
 	
 	public NFA() {
-		states = new LinkedHashSet<NFAState>();
-		abc = new LinkedHashSet<Character>();
+		states = new TreeSet<NFAState>();
+		abc = new TreeSet<Character>();
 	}
 	
 	@Override
@@ -54,6 +55,7 @@ public class NFA implements NFAInterface {
 	}
 
 	private void addState(NFAState s) {
+		
 		states.add(s);
 		
 	}
@@ -109,7 +111,7 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public Set<? extends State> getFinalStates() {
-		Set<NFAState> ret = new LinkedHashSet<NFAState>();
+		Set<NFAState> ret = new TreeSet<NFAState>();
 		for(NFAState s : states){
 			if(s.isFinal()){
 				ret.add(s);
@@ -156,7 +158,7 @@ public class NFA implements NFAInterface {
 					//DFAState dfaStart = new DFAState(start.getName());
 		
 		//Create set with start state and put it in the queue
-		LinkedHashSet<NFAState> startSet = new LinkedHashSet<NFAState>();
+		TreeSet<NFAState> startSet = new TreeSet<NFAState>();
 		//??
 		startSet.add((NFAState) getStartState());
 		dfa.addStartState(startSet.toString());
@@ -173,9 +175,9 @@ public class NFA implements NFAInterface {
 			
 			for(Character c : abc) {
 				if(c != 'e') {
-				Set<NFAState> getTo = new LinkedHashSet<NFAState>();
+				Set<NFAState> getTo = new TreeSet<NFAState>();
 					for(NFAState state : ncurrent) {
-						getTo = state.getTo(c);
+						getTo.addAll(state.getTo(c));
 						
 						if (getTo != null) {
 							
@@ -261,7 +263,7 @@ public class NFA implements NFAInterface {
 
 	@Override
 	public Set<NFAState> eClosure(NFAState s) {
-		Set<NFAState> visited = new LinkedHashSet<NFAState>();
+		Set<NFAState> visited = new TreeSet<NFAState>();
 		visited = eClosureHelper(s, visited);
 		
 		return visited;
